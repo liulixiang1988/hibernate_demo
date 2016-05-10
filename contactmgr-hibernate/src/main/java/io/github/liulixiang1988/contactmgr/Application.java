@@ -26,7 +26,7 @@ public class Application {
                 .withEmail("550488300@qq.com")
                 .withPhone(7735556666L)
                 .build();
-        save(contact);
+        int id = save(contact);
 
         //显示列表数据
 //        for(Contact c : fetchAllContact()) {
@@ -34,6 +34,41 @@ public class Application {
 //        }
         fetchAllContact().stream().forEach(System.out::println);
 
+        Contact c = findContactById(id);
+
+        c.setEmail("xjtuliulixiang@qq.com");
+
+        update(c);
+
+        fetchAllContact().stream().forEach(System.out::println);
+
+    }
+
+    private static Contact findContactById(int id) {
+        //打开会话
+        Session session = sessionFactory.openSession();
+        //获取对象或者null
+        Contact contact = session.get(Contact.class, id);
+        //关闭会话
+        session.close();
+        //返回对象
+        return contact;
+    }
+
+    private static void update(Contact contact) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.update(contact);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    private static void delete(Contact contact) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.delete(contact);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @SuppressWarnings("unchecked")
@@ -51,7 +86,7 @@ public class Application {
     }
 
 
-    private static void save(Contact contact) {
+    private static int save(Contact contact) {
         //打开session
         Session session = sessionFactory.openSession();
 
@@ -59,12 +94,14 @@ public class Application {
         session.beginTransaction();
 
         //使用session来保存对象
-        session.save(contact);
+        int id = (int)session.save(contact);
 
         //提交session
         session.getTransaction().commit();
 
         //关闭session
         session.close();
+
+        return id;
     }
 }
