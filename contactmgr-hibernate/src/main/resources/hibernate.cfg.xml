@@ -6,8 +6,11 @@
         <!--SQL Dialect-->
         <property name="dialect">org.hibernate.dialect.H2Dialect</property>
 
-        <!--启动时创建数据结构-->
-        <property name="hbm2ddl.auto">create</property>
+        <!--启动时更新数据结构-->
+        <property name="hbm2ddl.auto">update</property>
+
+        <!--显示Hibernate准备的查询-->
+        <property name="show_sql">true</property>
 
         <!--为标识的实体类命名-->
         <mapping class="io.github.liulixiang1988.contactmgr.model.Contact"/>
